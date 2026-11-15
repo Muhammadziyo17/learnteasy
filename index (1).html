@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7FEE7">
+<title>Learneasy</title>
+<meta name="description" content="Lug‘at kartalari: so‘zlarni to‘plamlarga ajrating, kartalarni aylantiring va tartibini aralashtiring.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#F7FEE7;--surface:#FFFFFF;--ink:#1A2E05;--muted:#667A4A;--line:#DDEFB6;--accent:#4D7C0F;--accent-ink:#FFFFFF;--back:#FEF3C7;--back-ink:#451A03;--danger:#DC2626;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg) linear-gradient(160deg,var(--g1,#F7FEE7) 0%,var(--g2,#FFFFFF) 60%,var(--g3,#FEFCE8) 100%) fixed;color:var(--ink);font-family:var(--ui,"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif);line-height:1.5}
+.face,.mark,.lname,.lmark{font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:none;width:100%;margin:0 auto;padding:24px clamp(16px,4vw,56px) 48px}
+h1{font-size:1.6rem;font-weight:800;margin:8px 0 4px;letter-spacing:-.01em}
+h2{font-size:1.05rem;font-weight:600;margin:0 0 10px}
+.sub{color:var(--muted);margin:0 0 20px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+input,textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+textarea{min-height:96px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row[hidden]{display:none}
+.row>input,.row>select{flex:1 1 140px;width:auto}
+button{font:inherit;font-weight:600;cursor:pointer;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 14px}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button:disabled{opacity:.45;cursor:not-allowed}
+details summary{cursor:pointer;color:var(--muted);margin-top:12px}
+details textarea{margin:10px 0}
+.hint{color:var(--muted);font-size:.9rem;margin:6px 0}
+.scene{perspective:1200px;margin:14px 0}
+.vbar{position:absolute;top:12px;left:12px;z-index:2;display:flex;gap:6px}
+.abar{position:absolute;top:12px;right:12px;z-index:2;display:flex;align-items:center;gap:6px}
+.abar button{display:inline-flex;align-items:center;gap:6px}
+#delWord{padding:0;width:32px;height:32px;justify-content:center;background:color-mix(in srgb,var(--danger) 14%,var(--surface));color:var(--danger);border-color:transparent}
+.vbar button,.abar button{padding:4px 14px;font-size:.9rem;border-radius:999px;background:var(--surface);color:var(--ink)}
+.vbar button[aria-pressed="true"],.abar button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.card{position:relative;height:clamp(260px,48vh,520px);width:100%;cursor:pointer;transform-style:preserve-3d;transition:transform .45s;border:0;padding:0;background:none;display:block}
+.card.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:52px 24px 24px;border-radius:20px;backface-visibility:hidden;-webkit-backface-visibility:hidden;font-size:clamp(2rem,5vw,3.8rem);font-weight:800;overflow-wrap:anywhere}
+.front{background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+.back{background:var(--back);color:var(--back-ink);transform:rotateY(180deg)}
+.bar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.count{color:var(--muted);font-variant-numeric:tabular-nums}
+.empty{color:var(--muted);text-align:center;padding:32px 8px}
+ul{list-style:none;margin:0;padding:0;max-height:60vh;overflow-y:auto}
+@media (min-width:900px){ul{columns:2;column-gap:40px}li{break-inside:avoid}}
+li{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}
+li:first-child{border-top:0}
+li span{overflow-wrap:anywhere}
+li small{color:var(--muted)}
+li button{padding:4px 10px;color:var(--danger)}
+li button.ok{color:var(--accent)}
+.acts{display:flex;gap:6px;flex-shrink:0}
+.ph{display:block;font-size:.45em;font-weight:400;opacity:.75;margin-top:.35em}
+.welcome{display:flex;align-items:flex-end;gap:2px;margin-bottom:6px}
+.mark{display:inline-block;transform:rotate(-3deg);transform-origin:left bottom;background:linear-gradient(transparent 62%,var(--mk,#FDE68A) 62%);color:var(--ink);padding:0 4px;font-size:1.5rem;font-weight:800;line-height:1.2}
+.arrow{color:var(--accent);flex-shrink:0}
+.logo{display:flex;align-items:center;gap:10px}
+.lmark{width:44px;height:44px;border-radius:12px;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800}
+h1.lname{margin:0;font-size:2.1rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);line-height:1.1}
+h1.lname span{color:var(--accent)}
+.themes{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.themes[hidden]{display:none}
+.fb{padding:4px 12px;border-radius:999px;font-size:.85rem}
+.fb[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+#themeBtn{display:inline-flex;align-items:center;gap:7px;border-radius:999px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--accent);display:inline-block}
+.themes span{font-size:.85rem;color:var(--muted)}
+.sw{width:26px;height:26px;padding:0;border-radius:50%;border:2px solid var(--surface);outline:1px solid var(--line)}
+.sw[aria-pressed="true"]{outline:2px solid var(--accent);outline-offset:1px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;font-size:.95rem;max-width:calc(100vw - 32px)}
+.toast[hidden]{display:none}
+.toast button{padding:4px 12px;background:transparent;color:inherit;border:1px solid currentColor}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+<script>
+(function(){
+var R={
+lime:["Limon","#65A30D","#F7FEE7","#FFFFFF","#1A2E05","#667A4A","#DDEFB6","#4D7C0F","#FFFFFF","#FEF3C7","#451A03","#F7FEE7","#FFFFFF","#FEFCE8","#FDE68A","#DC2626",0],
+indigo:["Indigo","#4F46E5","#F5F7FA","#FFFFFF","#111827","#6B7280","#E3E8EF","#4F46E5","#FFFFFF","#4F46E5","#FFFFFF","#EEF2FF","#FFFFFF","#F5F3FF","#C7D2FE","#DC2626",0],
+okean:["Okean","#0F766E","#F0FDFA","#FFFFFF","#0F172A","#64748B","#CDEFE9","#0F766E","#FFFFFF","#CCFBF1","#134E4A","#F0FDFA","#FFFFFF","#ECFEFF","#99F6E4","#DC2626",0],
+quyosh:["Quyosh","#C2410C","#FFF7ED","#FFFFFF","#1C1917","#78716C","#F7E0C8","#C2410C","#FFFFFF","#FFEDD5","#431407","#FFF7ED","#FFFFFF","#FEFCE8","#FED7AA","#DC2626",0],
+atirgul:["Atirgul","#BE123C","#FFF1F2","#FFFFFF","#1F1115","#7A6368","#F8D3D8","#BE123C","#FFFFFF","#FFE4E6","#4C0519","#FFF1F2","#FFFFFF","#FDF2F8","#FECDD3","#DC2626",0],
+binafsha:["Binafsha","#6D28D9","#F5F3FF","#FFFFFF","#1E1B2E","#6B6785","#DED8F7","#6D28D9","#FFFFFF","#EDE9FE","#2E1065","#F5F3FF","#FFFFFF","#FDF4FF","#DDD6FE","#DC2626",0],
+osmon:["Osmon","#0369A1","#F0F9FF","#FFFFFF","#0C1A2B","#5B7088","#C9E4F5","#0369A1","#FFFFFF","#E0F2FE","#082F49","#F0F9FF","#FFFFFF","#ECFEFF","#BAE6FD","#DC2626",0],
+grafit:["Grafit","#18181B","#F4F4F5","#FFFFFF","#18181B","#71717A","#E0E0E3","#18181B","#FFFFFF","#18181B","#FAFAFA","#F4F4F5","#FFFFFF","#FAFAFA","#E4E4E7","#DC2626",0],
+};
+var K=["name","sw","bg","surface","ink","muted","line","accent","aink","back","binK","g1","g2","g3","mk","danger","dark"];
+var V={bg:"--bg",surface:"--surface",ink:"--ink",muted:"--muted",line:"--line",accent:"--accent",aink:"--accent-ink",back:"--back",binK:"--back-ink",g1:"--g1",g2:"--g2",g3:"--g3",mk:"--mk",danger:"--danger"};
+var T={};
+Object.keys(R).forEach(function(id){var o={};K.forEach(function(k,i){o[k]=R[id][i]});T[id]=o});
+var DK=["bg","surface","ink","muted","line","accent","aink","back","binK","g1","g2","g3","mk"];
+var D={
+lime:["#10170A","#1A2410","#ECF8D8","#A3B58A","#2E3C1E","#A3E635","#10170A","#FDE68A","#422006","#10170A","#141E0C","#1A1606","#3F6212"],
+indigo:["#0E1226","#171C38","#EEF2FF","#A5B0D6","#283056","#818CF8","#0E1226","#818CF8","#0E1226","#0E1226","#121731","#150F2B","#4338CA"],
+okean:["#08191A","#0F2527","#E6FFFB","#8FB8B3","#1C3C3F","#2DD4BF","#062524","#99F6E4","#042F2E","#08191A","#0C2022","#071C24","#0F766E"],
+quyosh:["#1C1008","#2A1A0E","#FFF1E6","#C9A78C","#442A18","#FB923C","#1C1008","#FED7AA","#431407","#1C1008","#231409","#1F1708","#9A3412"],
+atirgul:["#1E0A10","#2B1119","#FFE9EE","#CFA0AC","#46202C","#FB7185","#1E0A10","#FECDD3","#4C0519","#1E0A10","#250D15","#200A1B","#9F1239"],
+binafsha:["#130C24","#1D1433","#F3EEFF","#B7A9D9","#31245A","#A78BFA","#130C24","#DDD6FE","#2E1065","#130C24","#180F2D","#1A0C26","#5B21B6"],
+osmon:["#07182A","#0D2540","#E6F4FF","#95B3D0","#173A5E","#38BDF8","#07182A","#BAE6FD","#082F49","#07182A","#0A1F36","#07202B","#075985"],
+grafit:["#0F0F11","#1A1A1D","#F4F4F5","#A1A1AA","#2E2E33","#E4E4E7","#18181B","#E4E4E7","#18181B","#0F0F11","#141416","#0F0F11","#3F3F46"]
+};
+var M="light";try{M=localStorage.getItem("flashcards-mode")==="dark"?"dark":"light"}catch(e){}
+function ap(id){
+  var ok=!!T[id],base=T[ok?id:"lime"],t={},r=document.documentElement.style;
+  Object.keys(base).forEach(function(k){t[k]=base[k]});
+  if(M==="dark"){var d=D[ok?id:"lime"];DK.forEach(function(k,i){t[k]=d[i]});t.danger="#FCA5A5";t.dark=1}
+  Object.keys(V).forEach(function(k){r.setProperty(V[k],t[k])});
+  r.colorScheme=t.dark?"dark":"light";
+  var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t.bg);
+  window.currentTheme=ok?id:"lime";
+  try{localStorage.setItem("flashcards-theme",window.currentTheme)}catch(e){}
+}
+window.THEMES=T;window.applyTheme=ap;
+window.getMode=function(){return M};
+window.setMode=function(m){M=m==="dark"?"dark":"light";try{localStorage.setItem("flashcards-mode",M)}catch(e){}ap(window.currentTheme||"lime")};
+var id="lime";try{id=localStorage.getItem("flashcards-theme")||"lime"}catch(e){}
+ap(id);
+var F={
+inter:["Inter",'"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',"Inter:wght@400;500;600"],
+dm:["DM Sans",'"DM Sans",system-ui,sans-serif',"DM+Sans:wght@400;500;700"],
+nunito:["Nunito",'"Nunito",system-ui,sans-serif',"Nunito:wght@400;600;700"],
+lora:["Lora",'"Lora",Georgia,"Times New Roman",serif',"Lora:wght@400;500;600"],
+poppins:["Poppins",'"Poppins",system-ui,sans-serif',"Poppins:wght@400;500;600"]
+};
+function af(id){
+  id=F[id]?id:"inter";
+  if(!document.getElementById("font-"+id)){
+    var l=document.createElement("link");l.id="font-"+id;l.rel="stylesheet";
+    l.href="https://fonts.googleapis.com/css2?family="+F[id][2]+"&display=swap";
+    document.head.appendChild(l);
+  }
+  document.documentElement.style.setProperty("--ui",F[id][1]);
+  window.currentFont=id;
+  try{localStorage.setItem("flashcards-font",id)}catch(e){}
+}
+window.FONTS=F;window.applyFont=af;
+var fid="inter";try{fid=localStorage.getItem("flashcards-font")||"inter"}catch(e){}
+af(fid);
+})();
+</script>
+</head>
+<body>
+<main>
+<div class="bar" style="margin-bottom:8px"><span class="hint" id="authMsg" role="status" style="margin:0">Hisobga kirmagansiz: so‘zlar faqat shu qurilmada saqlanadi.</span><span class="row"><button id="themeBtn" aria-expanded="false" aria-controls="themes"><span class="dot" aria-hidden="true"></span>Mavzu</button><button class="primary" id="login">Google bilan kirish</button><button id="logout" hidden>Chiqish</button></span></div>
+<div class="themes" id="themes" role="group" aria-label="Mavzu sozlamalari" hidden></div>
+<header style="margin:10px 0 14px">
+  <div class="welcome"><span class="mark">Welcome to</span><svg class="arrow" width="46" height="34" viewBox="0 0 46 34" aria-hidden="true"><path d="M4 6 C 22 0 40 8 34 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M26 22 L34 28 L38 19" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="logo"><div class="lmark" aria-hidden="true">L</div><h1 class="lname">Learn<span>easy</span></h1></div>
+</header>
+<p class="sub">So‘zlarni to‘plamlarga ajrating, har bir to‘plam alohida o‘rganiladi.</p>
+
+<section aria-label="Kartalar">
+  <div class="row">
+    <select id="deck" aria-label="To‘plam"></select>
+    <button id="newDeck">Yangi to‘plam</button>
+    <button id="renDeck">Nomini o‘zgartirish</button>
+    <button id="delDeck">To‘plamni o‘chirish</button>
+  </div>
+  <div id="dlg" class="row" style="margin-top:10px" hidden><span id="dlgLabel" class="hint" style="flex:1 1 100%;margin:0"></span><input id="dlgInput" style="flex:1 1 140px"><button class="primary" id="dlgOk">Ha</button><button id="dlgNo">Bekor qilish</button></div>
+  <div id="studyEmpty" class="empty">Bu to‘plamda so‘z yo‘q. Pastdan so‘z qo‘shing.</div>
+  <div id="studyBox" hidden>
+    <div style="position:relative"><div class="scene"><button class="card" id="card" aria-label="Kartani aylantirish"><div class="face front" id="front"></div><div class="face back" id="back"></div></button></div><div class="vbar" role="group" aria-label="Ovoz turi"><button id="vm" aria-pressed="false">Erkak</button><button id="vf" aria-pressed="true">Ayol</button></div><div class="abar"><button id="delWord" aria-label="Bu so‘zni o‘chirish" title="Bu so‘zni o‘chirish"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12"/><path d="M9 7v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg></button><button id="autoBtn" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 8a5 5 0 0 1 0 8"/><path d="M17.7 5a9 9 0 0 1 0 14"/><path d="M6 15h-2a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h2l3.5-4.5a.8.8 0 0 1 1.5.5v14a.8.8 0 0 1-1.5.5l-3.5-4.5"/></svg>Avtomatik o‘qish</button></div></div>
+    <div class="bar">
+      <button id="prev">Oldingi</button>
+      <span class="count" id="count"></span>
+      <button id="next" class="primary">Keyingi</button>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="primary" id="learn">Yodladim</button></div>
+    <input type="hidden" id="lang" value="en-US"><input type="checkbox" id="auto" hidden>
+    <p class="hint" id="cap" role="status" style="min-height:1.5em"></p>
+    <div class="row" style="margin-top:8px">
+      <button id="shuffle">Aralashtirish</button>
+      <button id="reset">Asl tartib</button>
+      <button id="swap">Tarjimadan boshlash: <span id="swapState">o‘chiq</span></button>
+    </div>
+    <p class="hint">Kartani bosing yoki bo‘sh joy tugmasini bosing — aylanadi. Strelkalar bilan almashtiring.</p>
+  </div>
+</section>
+
+<section>
+  <h2>So‘z qo‘shish <span class="count" id="addTo"></span></h2>
+  <div class="row">
+    <input id="term" placeholder="So‘z" autocomplete="off">
+    <input id="def" placeholder="Tarjima" autocomplete="off">
+    <button class="primary" id="add">Qo‘shish</button>
+  </div>
+  <details>
+    <summary>Ko‘p so‘zni birdan qo‘shish</summary>
+    <p class="hint">Har qatorga bittadan: <b>so‘z - tarjima</b> (yoki <b>so‘z = tarjima</b>)</p>
+    <textarea id="bulk" placeholder="apple - olma&#10;book - kitob"></textarea>
+    <button id="addBulk">Hammasini qo‘shish</button>
+    <p class="hint" id="bulkMsg" role="status"></p>
+  </details>
+</section>
+
+<section>
+  <div class="bar" style="margin-bottom:8px"><h2 style="margin:0">Ro‘yxat <span class="count" id="total"></span></h2><button id="clear">To‘plamni bo‘shatish</button></div>
+  <ul id="list"></ul>
+</section>
+
+<section>
+  <h2>Yodlanganlar <span class="count" id="learnedTotal"></span></h2>
+  <p class="hint">Yodlagan so‘zlaringiz shu yerda turadi va kartalarda chiqmaydi.</p>
+  <ul id="learnedList"></ul>
+</section>
+</main>
+<div id="toast" class="toast" role="status" hidden><span id="toastMsg"></span><button id="toastUndo">Qaytarish</button></div>
+
+<script>
+(function(){
+  var KEY="flashcards-v1", decks=[], all=[], words=[], cur=1, idx=0, flipped=false, reversed=false, nextId=1, nextDeck=2;
+  var $=function(i){return document.getElementById(i)};
+  var theme=window.currentTheme||"lime";
+  function buildThemes(){
+    var box=$("themes");box.textContent="";
+    var l=document.createElement("span");l.textContent="Rang:";box.appendChild(l);
+    Object.keys(window.THEMES).forEach(function(id){
+      var t=window.THEMES[id],b=document.createElement("button");
+      b.className="sw";b.style.background=t.sw;b.title=t.name;
+      b.setAttribute("aria-label",t.name+" rangi");b.setAttribute("aria-pressed",id===theme);
+      b.onclick=function(){theme=id;window.applyTheme(id);buildThemes();save()};
+      box.appendChild(b);
+    });
+    var dark=window.getMode()==="dark",mb=document.createElement("button");
+    mb.style.marginLeft="auto";mb.style.padding="6px 14px";
+    mb.textContent=dark?"Kunduzgi rejim":"Kechki rejim";mb.setAttribute("aria-pressed",dark);
+    mb.onclick=function(){window.setMode(dark?"light":"dark");buildThemes();save()};
+    box.appendChild(mb);
+    var br=document.createElement("div");br.style.cssText="flex-basis:100%;height:0";box.appendChild(br);
+    var fl=document.createElement("span");fl.textContent="Shrift:";box.appendChild(fl);
+    Object.keys(window.FONTS).forEach(function(id){
+      var fb=document.createElement("button");fb.className="fb";fb.textContent=window.FONTS[id][0];
+      fb.setAttribute("aria-pressed",id===window.currentFont);
+      fb.onclick=function(){window.applyFont(id);buildThemes();save()};
+      box.appendChild(fb);
+    });
+  }
+  function apply(d){
+    all=[];decks=[];nextId=1;nextDeck=2;cur=1;
+    if(d&&Array.isArray(d.words)){all=d.words;nextId=d.nextId||1;decks=d.decks||[];nextDeck=d.nextDeck||2;cur=d.cur||1}
+    if(!decks.length){decks=[{id:1,name:"Asosiy"}];cur=1;nextDeck=2}
+    all.forEach(function(w){if(!w.deck)w.deck=decks[0].id});
+    if(!decks.some(function(x){return x.id===cur}))cur=decks[0].id;
+    if(d&&d.theme&&window.THEMES[d.theme]){theme=d.theme;window.applyTheme(theme)}
+    if(d&&d.mode)window.setMode(d.mode);
+    if(d&&d.font&&window.FONTS[d.font])window.applyFont(d.font);
+  }
+  function load(){var d=null;try{d=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}apply(d);buildThemes()}
+  function state(){return {words:all,nextId:nextId,decks:decks,nextDeck:nextDeck,cur:cur,theme:theme,mode:window.getMode(),font:window.currentFont}}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state()))}catch(e){}if(window.onFlashSave)window.onFlashSave(state())}
+  var learned=[];
+  function refresh(){words=all.filter(function(w){return w.deck===cur&&!w.learned});learned=all.filter(function(w){return w.deck===cur&&w.learned})}
+  function sync(){all=all.filter(function(w){return w.deck!==cur||w.learned}).concat(words)}
+  function deckObj(){return decks.filter(function(d){return d.id===cur})[0]}
+  function face(el,txt,ph){
+    el.textContent="";
+    var d=document.createElement("div");d.textContent=txt;el.appendChild(d);
+    if(ph){var p=document.createElement("span");p.className="ph";p.textContent=ph;d.appendChild(p)}
+  }
+  var q=[],busy=false;
+  function enqueue(w){if(w.p===undefined&&q.indexOf(w)<0){q.push(w);run()}}
+  function run(){
+    if(busy||!q.length)return;
+    busy=true;
+    var w=q.shift();
+    fetchPh(w).then(function(){busy=false;setTimeout(run,150)});
+  }
+  function putPh(w,p){var t=all.filter(function(x){return x.id===w.id})[0];if(t){t.p=p;save();show()}}
+  function fetchPh(w){
+    if(!/^[A-Za-z'’-]+$/.test(w.t)){putPh(w,"");return Promise.resolve()}
+    return fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+encodeURIComponent(w.t.toLowerCase()))
+      .then(function(r){return r.ok?r.json():null})
+      .then(function(j){
+        var p="";
+        if(Array.isArray(j)){
+          for(var i=0;i<j.length&&!p;i++){
+            p=j[i].phonetic||"";
+            var ph=j[i].phonetics||[];
+            for(var k=0;k<ph.length&&!p;k++)p=ph[k].text||"";
+          }
+        }
+        putPh(w,p);
+      })
+      .catch(function(){});
+  }
+  function addWord(t,d){t=t.trim();d=d.trim();if(!t||!d)return false;var w={id:nextId++,t:t,d:d,deck:cur};all.push(w);enqueue(w);return true}
+  function show(){
+    refresh();
+    var sel=$("deck");sel.textContent="";
+    decks.forEach(function(d){
+      var o=document.createElement("option"),n=all.filter(function(w){return w.deck===d.id}).length;
+      o.value=d.id;o.textContent=d.name+" ("+n+")";if(d.id===cur)o.selected=true;sel.appendChild(o);
+    });
+    $("delDeck").disabled=decks.length<2;
+    $("addTo").textContent="— "+deckObj().name;
+    var has=words.length>0;
+    $("studyEmpty").hidden=has;$("studyBox").hidden=!has;
+    $("total").textContent="("+words.length+")";
+    if(idx>=words.length)idx=Math.max(0,words.length-1);
+    if(has){
+      var w=words[idx];
+      face($("front"),reversed?w.d:w.t,reversed?"":w.p);
+      face($("back"),reversed?w.t:w.d,reversed?w.p:"");
+      $("count").textContent=(idx+1)+" / "+words.length;
+      $("card").classList.toggle("flip",flipped);
+    }
+    fill($("list"),words,false);fill($("learnedList"),learned,true);
+    $("learnedTotal").textContent="("+learned.length+")";
+    $("studyEmpty").textContent=learned.length?"Bu to‘plamdagi barcha so‘zlar yodlangan. Pastdan qaytarib olishingiz mumkin.":"Bu to‘plamda so‘z yo‘q. Pastdan so‘z qo‘shing.";
+  }
+  function fill(ul,arr,isL){
+    ul.textContent="";
+    arr.forEach(function(w){
+      var li=document.createElement("li"),s=document.createElement("span"),sm=document.createElement("small"),g=document.createElement("span"),m=document.createElement("button"),d=document.createElement("button");
+      s.textContent=w.t+(w.p?"  "+w.p:"")+" — ";sm.textContent=w.d;s.appendChild(sm);
+      m.className="ok";m.textContent=isL?"Qaytarish":"Yodladim";
+      m.setAttribute("aria-label",w.t+(isL?" so‘zini o‘rganishga qaytarish":" so‘zini yodlandi deb belgilash"));
+      m.onclick=function(){w.learned=!isL;flipped=false;save();show()};
+      d.textContent="O‘chirish";d.setAttribute("aria-label",w.t+" so‘zini o‘chirish");
+      d.onclick=function(){all=all.filter(function(x){return x.id!==w.id});save();show()};
+      g.className="acts";g.appendChild(m);g.appendChild(d);
+      li.appendChild(s);li.appendChild(g);ul.appendChild(li);
+    });
+  }
+  function speak(txt){
+    if(!("speechSynthesis" in window)){$("cap").textContent="Brauzeringiz ovozli o‘qishni qo‘llamaydi.";return}
+    speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(txt),vs=speechSynthesis.getVoices(),lg=$("lang").value;
+    u.lang=lg;u.rate=.9;
+    var same=vs.filter(function(x){return x.lang.replace("_","-").slice(0,2)===lg.slice(0,2)});
+    var exact=same.filter(function(x){return x.lang.replace("_","-")===lg});
+    var pool=exact.length?exact:same;
+    if(!pool.length&&vs.length){$("cap").textContent="Bu til uchun ovoz topilmadi. Boshqa til tanlang.";return}
+    var FEM=/\b(female|woman|zira|samantha|victoria|karen|susan|hazel|aria|jenny|helena|anna|elena|irina|katja|hortense|julie|paulina|monica|yuna|kyoko|haruka|huihui|yaoyao|tessa|moira|fiona|allison|ava|nicky|sara|laura|lucia|amelie|alice|milena|ayumi|heami|sinji)\b/i;
+    var MAL=/\b(male|david|mark|daniel|alex|george|guy|fred|ryan|james|oliver|thomas|jorge|diego|pavel|stefan|yuri|ichiro|ravi|mikhail|rishi|jorge|luca|markus|hans)\b/i;
+    var v=pool.filter(function(x){return voiceG==="m"?(MAL.test(x.name)&&!FEM.test(x.name)):FEM.test(x.name)})[0];
+    if(v){u.voice=v;u.pitch=1}else{if(pool[0])u.voice=pool[0];u.pitch=voiceG==="m"?.6:1.4}
+    u.onstart=function(){$("cap").textContent="♪ "+txt};
+    u.onend=function(){$("cap").textContent=""};
+    u.onerror=function(){$("cap").textContent=""};
+    speechSynthesis.speak(u);
+  }
+  function go(n){if(!words.length)return;flipped=false;idx=(idx+n+words.length)%words.length;show();if($("auto").checked&&!reversed)speak(words[idx].t)}
+  $("deck").onchange=function(){cur=+$("deck").value;idx=0;flipped=false;save();show()};
+  var dlgCb=null;
+  function ask(label,val,withInput,cb){
+    $("dlgLabel").textContent=label;
+    var inp=$("dlgInput");inp.hidden=!withInput;inp.value=val||"";
+    dlgCb=cb;$("dlg").hidden=false;
+    (withInput?inp:$("dlgOk")).focus();
+    $("dlg").scrollIntoView({block:"center"});
+  }
+  function closeDlg(){$("dlg").hidden=true;dlgCb=null}
+  $("dlgOk").onclick=function(){var cb=dlgCb,v=$("dlgInput").value.trim();if(!$("dlgInput").hidden&&!v)return;closeDlg();if(cb)cb(v)};
+  $("dlgNo").onclick=closeDlg;
+  $("dlgInput").onkeydown=function(e){if(e.key==="Enter")$("dlgOk").click();else if(e.key==="Escape")closeDlg()};
+  $("newDeck").onclick=function(){ask("Yangi to‘plam nomi:","",true,function(n){decks.push({id:nextDeck,name:n});cur=nextDeck++;idx=0;flipped=false;save();show()})};
+  $("renDeck").onclick=function(){ask("To‘plamning yangi nomi:",deckObj().name,true,function(n){deckObj().name=n;save();show()})};
+  $("delDeck").onclick=function(){
+    if(decks.length<2)return;
+    ask("«"+deckObj().name+"» to‘plami va undagi "+(words.length+learned.length)+" ta so‘z o‘chirilsinmi?","",false,function(){
+      all=all.filter(function(w){return w.deck!==cur});
+      decks=decks.filter(function(d){return d.id!==cur});
+      cur=decks[0].id;idx=0;flipped=false;save();show();
+    });
+  };
+  $("learn").onclick=function(){var w=words[idx];if(!w)return;w.learned=true;flipped=false;save();show()};
+  var undoFn=null,toastT=null;
+  function toast(msg,fn){
+    $("toastMsg").textContent=msg;undoFn=fn;$("toast").hidden=false;
+    clearTimeout(toastT);toastT=setTimeout(function(){$("toast").hidden=true;undoFn=null},6000);
+  }
+  $("toastUndo").onclick=function(){if(undoFn)undoFn();undoFn=null;$("toast").hidden=true};
+  $("delWord").onclick=function(){
+    var w=words[idx];if(!w)return;
+    var pos=all.indexOf(w),at=idx;
+    all=all.filter(function(x){return x.id!==w.id});flipped=false;save();show();
+    toast("«"+w.t+"» o‘chirildi",function(){all.splice(Math.min(pos,all.length),0,w);idx=at;flipped=false;save();show()});
+  };
+  $("card").onclick=function(){flipped=!flipped;$("card").classList.toggle("flip",flipped);if($("auto").checked&&words[idx]&&flipped===reversed)speak(words[idx].t)};
+  $("next").onclick=function(){go(1)};
+  $("prev").onclick=function(){go(-1)};
+  $("shuffle").onclick=function(){
+    for(var i=words.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=words[i];words[i]=words[j];words[j]=t}
+    sync();idx=0;flipped=false;save();show();
+  };
+  $("reset").onclick=function(){words.sort(function(a,b){return a.id-b.id});sync();idx=0;flipped=false;save();show()};
+  $("swap").onclick=function(){reversed=!reversed;flipped=false;$("swapState").textContent=reversed?"yoqiq":"o‘chiq";show()};
+  $("add").onclick=function(){
+    if(addWord($("term").value,$("def").value)){$("term").value="";$("def").value="";save();show();$("term").focus()}
+    else{($("term").value.trim()?$("def"):$("term")).focus()}
+  };
+  $("def").onkeydown=function(e){if(e.key==="Enter")$("add").click()};
+  $("addBulk").onclick=function(){
+    var seps=[/\t+/,/\s[-–—]+\s/,/\s*[=|;]\s*/,/\s*:\s*/,/\s*[–—]\s*/,/\s*-\s*/],n=0,bad=[];
+    $("bulk").value.split(/\r?\n/).forEach(function(line){
+      line=line.replace(/^\s*\d+[.)]\s*/,"");
+      if(!line.trim())return;
+      var ok=false;
+      for(var i=0;i<seps.length&&!ok;i++){
+        var m=line.match(seps[i]);
+        if(m&&addWord(line.slice(0,m.index),line.slice(m.index+m[0].length)))ok=true;
+      }
+      if(ok)n++;else bad.push(line);
+    });
+    $("bulk").value=bad.join("\n");
+    $("bulkMsg").textContent=n+" ta so‘z qo‘shildi."+(bad.length?" "+bad.length+" ta qator tushunilmadi va maydonda qoldi.":"");
+    if(n){save();show()}
+  };
+  $("clear").onclick=function(){
+    if(!words.length&&!learned.length)return;
+    ask("Bu to‘plamdagi barcha "+(words.length+learned.length)+" ta so‘z (yodlanganlar ham) o‘chirilsinmi?","",false,function(){
+      all=all.filter(function(w){return w.deck!==cur});idx=0;flipped=false;save();show();
+    });
+  };
+  document.addEventListener("keydown",function(e){
+    var tag=(e.target.tagName||"").toLowerCase();if(tag==="input"||tag==="textarea"||tag==="select")return;
+    if(e.key==="ArrowRight")go(1);else if(e.key==="ArrowLeft")go(-1);
+    else if(e.key===" "&&words.length){e.preventDefault();$("card").click()}
+  });
+  var voiceG="f";
+  function setG(g,play){
+    voiceG=g;
+    $("vm").setAttribute("aria-pressed",g==="m");$("vf").setAttribute("aria-pressed",g==="f");
+    try{localStorage.setItem("flashcards-voice",g)}catch(e){}
+    if(play&&words[idx])speak(words[idx].t);
+  }
+  $("vm").onclick=function(){setG("m",true)};
+  $("vf").onclick=function(){setG("f",true)};
+  var sg="f";try{sg=localStorage.getItem("flashcards-voice")==="m"?"m":"f"}catch(e){}
+  setG(sg,false);
+  $("lang").onchange=function(){try{localStorage.setItem("flashcards-lang",$("lang").value)}catch(e){}};
+  $("auto").onchange=function(){try{localStorage.setItem("flashcards-auto",$("auto").checked?"1":"")}catch(e){}};
+  try{$("auto").checked=!!localStorage.getItem("flashcards-auto")}catch(e){}
+  $("autoBtn").setAttribute("aria-pressed",$("auto").checked);
+  $("autoBtn").onclick=function(){$("auto").checked=!$("auto").checked;$("auto").onchange();$("autoBtn").setAttribute("aria-pressed",$("auto").checked)};
+  $("themeBtn").onclick=function(e){
+    e.stopPropagation();
+    var pn=$("themes");pn.hidden=!pn.hidden;
+    $("themeBtn").setAttribute("aria-expanded",String(!pn.hidden));
+  };
+  document.addEventListener("click",function(e){
+    var pn=$("themes");
+    if(pn.hidden)return;
+    var path=e.composedPath?e.composedPath():[];
+    if(path.indexOf(pn)<0&&path.indexOf($("themeBtn"))<0){pn.hidden=true;$("themeBtn").setAttribute("aria-expanded","false")}
+  });
+  load();show();all.forEach(enqueue);
+  window.flash={
+    get:state,
+    set:function(d){apply(d);buildThemes();try{localStorage.setItem(KEY,JSON.stringify(state()))}catch(e){}idx=0;flipped=false;show();all.forEach(enqueue)},
+    clear:function(){apply(null);try{localStorage.removeItem(KEY)}catch(e){}idx=0;flipped=false;show()}
+  };
+})();
+</script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const app=initializeApp({
+  apiKey:"AIzaSyAN4pKSWeMfa1M3JziTYf79Brf9uJL-HmM",
+  authDomain:"easylearnt-0778.firebaseapp.com",
+  projectId:"easylearnt-0778",
+  storageBucket:"easylearnt-0778.firebasestorage.app",
+  messagingSenderId:"644708123824",
+  appId:"1:644708123824:web:10b46d60dc2967a45c6775"
+});
+const auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+const OFF="Hisobga kirmagansiz: so‘zlar faqat shu qurilmada saqlanadi.";
+let user=null,timer=null,wasIn=false;
+const msg=t=>{$("authMsg").textContent=t};
+
+$("login").onclick=async()=>{
+  const p=new GoogleAuthProvider();
+  try{await signInWithPopup(auth,p)}
+  catch(e){
+    if(e.code==="auth/popup-blocked"||e.code==="auth/operation-not-supported-in-this-environment")signInWithRedirect(auth,p);
+    else if(e.code!=="auth/popup-closed-by-user"&&e.code!=="auth/cancelled-popup-request")msg("Kirishda xato: "+e.code);
+  }
+};
+$("logout").onclick=()=>signOut(auth);
+
+window.onFlashSave=s=>{
+  if(!user)return;
+  clearTimeout(timer);msg("Saqlanmoqda…");
+  const u=user;
+  timer=setTimeout(async()=>{
+    try{await setDoc(doc(db,"users",u.uid),{state:JSON.stringify(s),updated:Date.now()});msg((u.displayName||u.email)+" — saqlandi")}
+    catch(e){msg("Saqlashda xato: "+e.code)}
+  },600);
+};
+
+onAuthStateChanged(auth,async u=>{
+  user=null;
+  if(!u){
+    $("login").hidden=false;$("logout").hidden=true;msg(OFF);
+    if(wasIn&&window.flash)window.flash.clear();
+    wasIn=false;return;
+  }
+  wasIn=true;$("login").hidden=true;$("logout").hidden=false;msg("Yuklanmoqda…");
+  try{
+    const ref=doc(db,"users",u.uid),snap=await getDoc(ref);
+    if(snap.exists())window.flash.set(JSON.parse(snap.data().state));
+    else await setDoc(ref,{state:JSON.stringify(window.flash.get()),updated:Date.now()});
+    user=u;msg((u.displayName||u.email)+" — sinxronlandi");
+  }catch(e){msg("Xato: "+e.code+". Firestore qoidalarini tekshiring.")}
+});
+</script>
+</body>
+</html>
